@@ -18,7 +18,7 @@ extern "C" {
 #include FT_GLYPH_H
 #include FT_CACHE_H
 
-#define USE_CACHE_MANGER	1
+#define USE_CACHE_MANGER	0
 
 /*********************
  *      DEFINES
