@@ -413,6 +413,22 @@ static bool get_glyph_dsc_cb_nocache(const lv_font_t * font,
         return false;
     }
 
+    if (face->glyph->format == FT_GLYPH_FORMAT_OUTLINE) {
+        if (dsc->style & FT_FONT_STYLE_BOLD) {
+            int strength = 1 << 6;
+            FT_Outline_Embolden(&face->glyph->outline, strength);
+        }
+
+        if (dsc->style & FT_FONT_STYLE_ITALIC) {
+            FT_Matrix ItalicMatrix;
+            ItalicMatrix.xx = 1 << 16;
+            ItalicMatrix.xy = 0x5800;
+            ItalicMatrix.yx = 0;
+            ItalicMatrix.yy = 1 << 16;
+            FT_Outline_Transform(&face->glyph->outline, &ItalicMatrix);
+        }
+    }
+
     error = FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL);
     if(error) {
         return false;
